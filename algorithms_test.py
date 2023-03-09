@@ -1,9 +1,10 @@
 import pytest
-from algorithms import SubstringSearcher
+from algorithms import SubstringSearcher, SimpleSubstringSearcher
 from itertools import product
 
 
 SUBSTRING_SEARCHERS = [
+    SimpleSubstringSearcher()
 ]
 
 
