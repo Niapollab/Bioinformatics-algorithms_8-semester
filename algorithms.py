@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from typing import Any, Callable
 
 
 @dataclass
@@ -12,3 +13,18 @@ class SubstringSearcher(ABC):
     @abstractmethod
     def find_substring(self, text: str, sub: str) -> FindResult:
         pass
+
+
+class Counter:
+    _count: int
+
+    def __init__(self, start_count: int = 0) -> None:
+        self._count = start_count
+
+    def do(self, callable: Callable[..., Any], *args: Any) -> Any:
+        self._count += 1
+        return callable(*args)
+
+    @property
+    def count(self) -> int:
+        return self._count
