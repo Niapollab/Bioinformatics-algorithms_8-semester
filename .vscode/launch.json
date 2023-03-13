@@ -14,6 +14,16 @@
             "args": [
                 "SimpleSubstringSearcher"
             ]
+        },
+        {
+            "name": "Lauch",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+            ]
         }
     ]
 }
