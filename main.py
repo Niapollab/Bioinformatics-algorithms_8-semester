@@ -1,9 +1,10 @@
 from argparse import ArgumentParser, OPTIONAL
-from algorithms import SubstringSearcher
+from algorithms import KnuthMorrisPrattSubstringSearcher, SubstringSearcher
 from cli import select_option
 
 
 SUBSTRING_SEARCHERS = {type(s).__name__: s for s in [
+    KnuthMorrisPrattSubstringSearcher()
 ]}
 
 

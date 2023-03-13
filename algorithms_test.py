@@ -1,9 +1,10 @@
 import pytest
-from algorithms import SubstringSearcher
+from algorithms import SubstringSearcher, KnuthMorrisPrattSubstringSearcher
 from itertools import product
 
 
 SUBSTRING_SEARCHERS = [
+    KnuthMorrisPrattSubstringSearcher()
 ]
 
 
@@ -16,7 +17,9 @@ CASES = [
     ('ab', 'abc', None),
     ('abab', 'ab', 0),
     ('ab__ab', 'ab', 0),
-    ('ac__ab', 'ab', 4)
+    ('ac__ab', 'ab', 4),
+    ('abcdabca', 'abca', 4),
+    ('aabaabbaab', 'abba', 4)
 ]
 
 
