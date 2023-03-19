@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Callable
+from typing import Any, Callable, Iterable
 
 
 @dataclass
@@ -11,7 +11,7 @@ class FindResult:
 
 class SubstringSearcher(ABC):
     @abstractmethod
-    def find_substring(self, text: str, sub: str) -> FindResult:
+    def enumerate_substrings(self, text: str, sub: str) -> Iterable[FindResult]:
         pass
 
 

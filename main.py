@@ -27,10 +27,11 @@ def parse_arguments() -> tuple[SubstringSearcher, str, str]:
 
 def main(args: tuple[SubstringSearcher, str, str]) -> None:
     searcher, text, sub = args
-    result = searcher.find_substring(text, sub)
+    results = searcher.enumerate_substrings(text, sub)
 
-    print(f'Comparison count: {result.comp_count}',
-          f'First pass index: {result.pos}', sep='\n')
+    for result in results:
+        print(f'Comparison count: {result.comp_count}',
+            f'First pass index: {result.pos}', sep='\n')
 
 
 if __name__ == '__main__':
