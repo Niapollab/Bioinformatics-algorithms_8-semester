@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Callable, Sequence
 from operator import eq, ne
+from typing import Any, Callable, Sequence, Iterable
 
 
 @dataclass
@@ -12,7 +12,7 @@ class FindResult:
 
 class SubstringSearcher(ABC):
     @abstractmethod
-    def find_substring(self, text: str, sub: str) -> FindResult:
+    def enumerate_substrings(self, text: str, sub: str) -> Iterable[FindResult]:
         pass
 
 
@@ -31,16 +31,53 @@ class Counter:
         return self._count
 
 
+class SimpleSubstringSearcher(SubstringSearcher):
+    def enumerate_substrings(self, text: str, sub: str) -> Iterable[FindResult]:
+        text_len, sub_len = len(text), len(sub)
+
+        if not sub:
+            for i in range(text_len):
+                yield FindResult(0, i)
+            return
+
+        counter = Counter()
+
+        def compare(index: int) -> int:
+            i = 0
+
+            while i < sub_len and i < text_len:
+                if counter.do(ne, text[i + index], sub[i]):
+                    return i
+
+                i += 1
+
+            return i
+
+        i = 0
+
+        while i < text_len - sub_len + 1:
+            j = compare(i)
+
+            if j >= sub_len:
+                yield FindResult(counter.count, i)
+
+            i += 1
+
 class KnuthMorrisPrattSubstringSearcher(SubstringSearcher):
-    def find_substring(self, text: str, sub: str) -> FindResult:
-        N = len(text)
-        M = len(sub)
+    def enumerate_substrings(self, text: str, sub: str) -> Iterable[FindResult]:
+        TEXT_LEN = len(text)
+        SUB_LEN = len(sub)
+
+        if not sub:
+            for i in range(TEXT_LEN):
+                yield FindResult(0, i)
+            return
 
         PREFIX_ARR, COMP_COUNT = KnuthMorrisPrattSubstringSearcher.calculate_prefix_arr(sub)
         COUNTER = Counter(COMP_COUNT)
 
         def match(i: int, j: int) -> tuple[int, int]:
-            while i < N and j < M:
+            while i < TEXT_LEN and j < SUB_LEN:
                 if COUNTER.do(ne, text[i], sub[j]):
                     return i, j
 
@@ -50,18 +87,16 @@ class KnuthMorrisPrattSubstringSearcher(SubstringSearcher):
             return i, j
 
         i, j = 0, 0
-        while i < N:
+        while i < TEXT_LEN - SUB_LEN + j + 1:
             i, j = match(i, j)
 
-            if j >= M:
-                return FindResult(COUNTER.count, i - M)
+            if j >= SUB_LEN:
+                yield FindResult(COUNTER.count, i - SUB_LEN)
 
             if j == 0:
                 i += 1
             else:
                 j = PREFIX_ARR[j - 1]
-
-        return FindResult(COUNTER.count, None)
 
     @staticmethod
     def calculate_prefix_arr(sub: str) -> tuple[Sequence[int], int]:

@@ -5,6 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Lauch SimpleSubstringSearcher",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "SimpleSubstringSearcher"
+            ]
+        },
+        {
             "name": "Lauch KnuthMorrisPrattSubstringSearcher",
             "type": "python",
             "request": "launch",
@@ -22,7 +33,8 @@
             "program": "main.py",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": []
+            "args": [
+            ]
         }
     ]
 }
