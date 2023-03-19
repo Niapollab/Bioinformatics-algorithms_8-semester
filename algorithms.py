@@ -63,22 +63,23 @@ class SimpleSubstringSearcher(SubstringSearcher):
 
             i += 1
 
+
 class KnuthMorrisPrattSubstringSearcher(SubstringSearcher):
     def enumerate_substrings(self, text: str, sub: str) -> Iterable[FindResult]:
-        TEXT_LEN = len(text)
-        SUB_LEN = len(sub)
+        text_len = len(text)
+        sub_len = len(sub)
 
         if not sub:
-            for i in range(TEXT_LEN):
+            for i in range(text_len):
                 yield FindResult(0, i)
             return
 
-        PREFIX_ARR, COMP_COUNT = KnuthMorrisPrattSubstringSearcher.calculate_prefix_arr(sub)
-        COUNTER = Counter(COMP_COUNT)
+        prefix_arr, comp_count = KnuthMorrisPrattSubstringSearcher.calculate_prefix_arr(sub)
+        counter = Counter(comp_count)
 
         def match(i: int, j: int) -> tuple[int, int]:
-            while i < TEXT_LEN and j < SUB_LEN:
-                if COUNTER.do(ne, text[i], sub[j]):
+            while i < text_len and j < sub_len:
+                if counter.do(ne, text[i], sub[j]):
                     return i, j
 
                 i += 1
@@ -87,16 +88,16 @@ class KnuthMorrisPrattSubstringSearcher(SubstringSearcher):
             return i, j
 
         i, j = 0, 0
-        while i < TEXT_LEN - SUB_LEN + j + 1:
+        while i < text_len - sub_len + j + 1:
             i, j = match(i, j)
 
-            if j >= SUB_LEN:
-                yield FindResult(COUNTER.count, i - SUB_LEN)
+            if j >= sub_len:
+                yield FindResult(counter.count, i - sub_len)
 
             if j == 0:
                 i += 1
             else:
-                j = PREFIX_ARR[j - 1]
+                j = prefix_arr[j - 1]
 
     @staticmethod
     def calculate_prefix_arr(sub: str) -> tuple[Sequence[int], int]:
