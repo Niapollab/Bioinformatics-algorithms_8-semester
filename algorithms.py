@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from operator import eq, ne
 from typing import Any, Callable, Iterable
 
 
@@ -28,3 +29,36 @@ class Counter:
     @property
     def count(self) -> int:
         return self._count
+
+
+class SimpleSubstringSearcher(SubstringSearcher):
+    def enumerate_substrings(self, text: str, sub: str) -> Iterable[FindResult]:
+        text_len, sub_len = len(text), len(sub)
+
+        if not sub:
+            for i in range(text_len):
+                yield FindResult(0, i)
+            return
+
+        counter = Counter()
+
+        def compare(index: int) -> int:
+            i = 0
+
+            while i < sub_len and i < text_len:
+                if counter.do(ne, text[i + index], sub[i]):
+                    return i
+
+                i += 1
+
+            return i
+
+        i = 0
+
+        while i < text_len - sub_len + 1:
+            j = compare(i)
+
+            if j >= sub_len:
+                yield FindResult(counter.count, i)
+
+            i += 1
