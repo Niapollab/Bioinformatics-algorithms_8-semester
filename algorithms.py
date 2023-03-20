@@ -65,6 +65,11 @@ class SimpleSubstringSearcher(SubstringSearcher):
 
 
 class KnuthMorrisPrattSubstringSearcher(SubstringSearcher):
+    _disable_count_in_prefix_array: bool
+
+    def __init__(self, disable_count_in_prefix_array: bool = True) -> None:
+        self._disable_count_in_prefix_array = disable_count_in_prefix_array
+
     def enumerate_substrings(self, text: str, sub: str) -> Iterable[FindResult]:
         text_len = len(text)
         sub_len = len(sub)
@@ -75,7 +80,7 @@ class KnuthMorrisPrattSubstringSearcher(SubstringSearcher):
             return
 
         prefix_arr, comp_count = KnuthMorrisPrattSubstringSearcher.calculate_prefix_arr(sub)
-        counter = Counter(comp_count)
+        counter = Counter(0 if self._disable_count_in_prefix_array else comp_count)
 
         def match(i: int, j: int) -> tuple[int, int]:
             while i < text_len and j < sub_len:
