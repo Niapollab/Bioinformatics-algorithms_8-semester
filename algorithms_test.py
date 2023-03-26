@@ -1,11 +1,13 @@
+import string
 import pytest
-from algorithms import SubstringSearcher, SimpleSubstringSearcher, KnuthMorrisPrattSubstringSearcher
+from algorithms import KarpRabinSubstringSearcher, KnuthMorrisPrattSubstringSearcher, SubstringSearcher, SimpleSubstringSearcher
 from itertools import product
 
 
 SUBSTRING_SEARCHERS = [
     SimpleSubstringSearcher(),
-    KnuthMorrisPrattSubstringSearcher()
+    KnuthMorrisPrattSubstringSearcher(),
+    KarpRabinSubstringSearcher(len(string.ascii_lowercase), 98321)
 ]
 
 

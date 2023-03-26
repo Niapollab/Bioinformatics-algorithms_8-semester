@@ -1,11 +1,13 @@
 from argparse import ArgumentParser, OPTIONAL
-from algorithms import KnuthMorrisPrattSubstringSearcher, SimpleSubstringSearcher, SubstringSearcher
+import string
+from algorithms import KarpRabinSubstringSearcher, KnuthMorrisPrattSubstringSearcher, SimpleSubstringSearcher, SubstringSearcher
 from cli import select_option
 
 
 SUBSTRING_SEARCHERS = {type(s).__name__: s for s in [
     SimpleSubstringSearcher(),
-    KnuthMorrisPrattSubstringSearcher()
+    KnuthMorrisPrattSubstringSearcher(),
+    KarpRabinSubstringSearcher(len(string.ascii_lowercase), 98321)
 ]}
 
 
