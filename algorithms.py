@@ -4,7 +4,7 @@ from operator import eq, ne
 from typing import Any, Callable, Sequence, Iterable
 
 
-@dataclass
+@dataclass(frozen=True, eq=True)
 class FindResult:
     comp_count: int
     pos: int | None = None
@@ -13,6 +13,12 @@ class FindResult:
 class SubstringSearcher(ABC):
     @abstractmethod
     def enumerate_substrings(self, text: str, sub: str) -> Iterable[FindResult]:
+        pass
+
+
+class EditorialDistanceCalculator(ABC):
+    @abstractmethod
+    def get_editorial_distance(self, first: str, second: str) -> int:
         pass
 
 
@@ -122,3 +128,25 @@ class KnuthMorrisPrattSubstringSearcher(SubstringSearcher):
             i += 1
 
         return prefix_arr, counter.count
+
+
+class WagnerFischerEditorialDistanceCalculator(EditorialDistanceCalculator):
+    def get_editorial_distance(self, first: str, second: str) -> int:
+        first_len = len(first) + 1
+        second_len = len(second) + 1
+
+        distance_matrix = [[0] * second_len for _ in range(first_len)]
+
+        for i in range(first_len):
+            distance_matrix[i][0] = i
+
+        for j in range(second_len):
+            distance_matrix[0][j] = j
+
+        for j in range(1, second_len):
+            for i in range(1, first_len):
+                distance_matrix[i][j] = distance_matrix[i - 1][j - 1] \
+                    if first[i - 1] == second[j - 1] \
+                    else min(distance_matrix[i - 1][j] + 1, distance_matrix[i][j - 1] + 1, distance_matrix[i - 1][j - 1] + 1)
+
+        return distance_matrix[first_len - 1][second_len - 1]

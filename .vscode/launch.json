@@ -27,6 +27,17 @@
             ]
         },
         {
+            "name": "Lauch WagnerFischerEditorialDistanceCalculator",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "WagnerFischerEditorialDistanceCalculator"
+            ]
+        },
+        {
             "name": "Lauch",
             "type": "python",
             "request": "launch",
