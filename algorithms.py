@@ -150,3 +150,46 @@ class WagnerFischerEditorialDistanceCalculator(EditorialDistanceCalculator):
                     else min(distance_matrix[i - 1][j] + 1, distance_matrix[i][j - 1] + 1, distance_matrix[i - 1][j - 1] + 1)
 
         return distance_matrix[first_len - 1][second_len - 1]
+
+
+class KarpRabinSubstringSearcher(SubstringSearcher):
+    def __init__(self, power: int, mod: int) -> None:
+        self._power = power
+        self._mod = mod
+
+    def enumerate_substrings(self, text: str, sub: str) -> Iterable[FindResult]:
+        text_len = len(text)
+        sub_len = len(sub)
+
+        if not sub:
+            for i in range(text_len):
+                yield FindResult(0, i)
+            return
+
+        power = pow(self._power, sub_len - 1) % self._mod
+
+        text_hash, sub_hash = 0, 0
+        for i in range(min(text_len, sub_len)):
+            text_hash = (self._power * text_hash + ord(sub[i])) % self._mod
+            sub_hash = (self._power * sub_hash + ord(text[i])) % self._mod
+
+        i = 0
+        counter = Counter()
+        while i < text_len - sub_len + 1:
+            if text_hash == sub_hash:
+
+                match_found = True
+                for j in range(sub_len):
+                    if counter.do(ne, text[i + j], sub[j]):
+                        match_found = False
+                        break
+
+                if match_found:
+                    yield FindResult(counter.count, i)
+
+            if i < text_len - sub_len:
+                sub_hash = (sub_hash - power * ord(text[i])) % self._mod
+                sub_hash = (sub_hash * self._power + ord(text[i + sub_len])) % self._mod
+                sub_hash = (sub_hash + self._mod) % self._mod
+
+            i += 1

@@ -38,6 +38,17 @@
             ]
         },
         {
+            "name": "Lauch KarpRabinSubstringSearcher",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "KarpRabinSubstringSearcher"
+            ]
+        },
+        {
             "name": "Lauch",
             "type": "python",
             "request": "launch",

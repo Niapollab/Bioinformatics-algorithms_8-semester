@@ -1,12 +1,14 @@
+import string
 from argparse import ArgumentParser, OPTIONAL
-from algorithms import WagnerFischerEditorialDistanceCalculator, EditorialDistanceCalculator, KnuthMorrisPrattSubstringSearcher, SimpleSubstringSearcher, SubstringSearcher
+from algorithms import KarpRabinSubstringSearcher, WagnerFischerEditorialDistanceCalculator, EditorialDistanceCalculator, KnuthMorrisPrattSubstringSearcher, SimpleSubstringSearcher, SubstringSearcher
 from cli import select_option
 
 
 ALGORITHMS = {type(s).__name__: s for s in [
     SimpleSubstringSearcher(),
     KnuthMorrisPrattSubstringSearcher(),
-    WagnerFischerEditorialDistanceCalculator()
+    WagnerFischerEditorialDistanceCalculator(),
+    KarpRabinSubstringSearcher(len(string.ascii_lowercase), 98321)
 ]}
 
 
